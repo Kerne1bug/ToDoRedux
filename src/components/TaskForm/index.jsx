@@ -4,15 +4,21 @@ import { useDispatch } from 'react-redux';
 import { ADD_TASK } from '../../actions';
 
 
-function TaskForm() {
-	const [newTask, setNewTask] = useState('');
+const TaskForm = () => {
+	const [newTask, setNewTask] = useState("");
 	const dispatch = useDispatch();
+
+	const handleInputChange = (e) => {
+		setNewTask(e.target.value);
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (newTask.trim() === '') return;
-		dispatch({ type: ADD_TASK, payload: { id: Date.now(), text: newTask } });
-		setNewTask('');
+		const trimmedTask = newTask.trim();
+		if (!trimmedTask) return; // Проверка на пустую строку
+
+		dispatch({ type: ADD_TASK, payload: { id: Date.now(), text: trimmedTask } });
+		setNewTask("");
 	};
 
 	return (
@@ -22,12 +28,12 @@ function TaskForm() {
 				<input
 					type="text"
 					value={newTask}
-					onChange={(e) => setNewTask(e.target.value)}
+					onChange={handleInputChange} // Используем функцию handleInputChange
 				/>
 				<button type="submit">Добавить</button>
 			</form>
 		</div>
 	);
-}
+};
 
 export default TaskForm;
